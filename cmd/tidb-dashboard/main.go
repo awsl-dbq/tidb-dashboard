@@ -18,7 +18,9 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/http/httputil"
 	_ "net/http/pprof" // #nosec
+	"net/url"
 	"os"
 	"os/signal"
 	"path"
@@ -167,7 +169,18 @@ func loadDistroStringsRes() {
 
 	distro.ReplaceGlobal(distroStringsRes)
 }
-
+func tigerHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		chatbot := "http://127.0.0.1:5005/"
+		endpoint, err := url.Parse(chatbot)
+		r.URL.Path = strings.ReplaceAll(r.URL.Path, "/dashboard/api/tiger", "")
+		if err != nil {
+			log.L().Info(fmt.Sprintf("%v", err))
+		}
+		chatser := httputil.NewSingleHostReverseProxy(endpoint)
+		chatser.ServeHTTP(w, r)
+	})
+}
 func main() {
 	// Flushing any buffered log entries
 	defer log.Sync() //nolint:errcheck
@@ -214,11 +227,12 @@ func main() {
 
 	mux := http.DefaultServeMux
 	uiHandler := http.StripPrefix(strings.TrimRight(config.UIPathPrefix, "/"), uiserver.Handler(assets))
+
 	mux.Handle("/", http.RedirectHandler(config.UIPathPrefix, http.StatusFound))
 	mux.Handle(config.UIPathPrefix, uiHandler)
 	mux.Handle(config.APIPathPrefix, apiserver.Handler(s))
 	mux.Handle(config.SwaggerPathPrefix, swaggerserver.Handler())
-
+	mux.Handle("/dashboard/api/tiger/", tigerHandler())
 	log.Info(fmt.Sprintf("Dashboard server is listening at %s", listenAddr))
 	log.Info(fmt.Sprintf("UI:      http://%s:%d/dashboard/", cliConfig.ListenHost, cliConfig.ListenPort))
 	log.Info(fmt.Sprintf("API:     http://%s:%d/dashboard/api/", cliConfig.ListenHost, cliConfig.ListenPort))
