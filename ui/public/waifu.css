@@ -38,6 +38,8 @@
 }
 
 #waifu-tips {
+    bottom: 180px;
+    right: 200px;
     animation: shake 50s ease-in-out 5s infinite;
     background-color: rgba(236, 217, 188, .5);
     border: 1px solid rgba(224, 186, 140, .62);
