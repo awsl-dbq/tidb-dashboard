@@ -181,6 +181,12 @@ func tigerHandler() http.Handler {
 		chatser.ServeHTTP(w, r)
 	})
 }
+func tiTvHandler() http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		log.L().Info(r.URL.Path)
+		rw.Write([]byte("OK"))
+	})
+}
 func main() {
 	// Flushing any buffered log entries
 	defer log.Sync() //nolint:errcheck
@@ -233,6 +239,7 @@ func main() {
 	mux.Handle(config.APIPathPrefix, apiserver.Handler(s))
 	mux.Handle(config.SwaggerPathPrefix, swaggerserver.Handler())
 	mux.Handle("/dashboard/api/tiger/", tigerHandler())
+	mux.Handle("/dashboard/api/titv/", tiTvHandler())
 	log.Info(fmt.Sprintf("Dashboard server is listening at %s", listenAddr))
 	log.Info(fmt.Sprintf("UI:      http://%s:%d/dashboard/", cliConfig.ListenHost, cliConfig.ListenPort))
 	log.Info(fmt.Sprintf("API:     http://%s:%d/dashboard/api/", cliConfig.ListenHost, cliConfig.ListenPort))

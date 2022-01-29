@@ -2,125 +2,127 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="x-public-path-prefix" content="__PUBLIC_PATH_PREFIX__" />
-  <link rel="icon" href="%PUBLIC_URL%/distro-res/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      background: #fff;
-    }
-
-    #dashboard_page_spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-    }
-
-    .dot-flashing {
-      position: relative;
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: #aaa;
-      -webkit-animation: dot-flashing 1s infinite linear alternate;
-      animation: dot-flashing 1s infinite linear alternate;
-      -webkit-animation-delay: 0.5s;
-      animation-delay: 0.5s;
-    }
-
-    .dot-flashing::before,
-    .dot-flashing::after {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      top: 0;
-    }
-
-    .dot-flashing::before {
-      left: -15px;
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: #aaa;
-      -webkit-animation: dot-flashing 1s infinite alternate;
-      animation: dot-flashing 1s infinite alternate;
-      -webkit-animation-delay: 0s;
-      animation-delay: 0s;
-    }
-
-    .dot-flashing::after {
-      left: 15px;
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: #aaa;
-      -webkit-animation: dot-flashing 1s infinite alternate;
-      animation: dot-flashing 1s infinite alternate;
-      -webkit-animation-delay: 1s;
-      animation-delay: 1s;
-    }
-
-    @-webkit-keyframes dot-flashing {
-      0% {
-        background-color: #aaa;
-      }
-
-      50%,
-      100% {
-        background-color: #ddd;
-      }
-    }
-
-    @keyframes dot-flashing {
-      0% {
-        background-color: #aaa;
-      }
-
-      50%,
-      100% {
-        background-color: #ddd;
-      }
-    }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="x-public-path-prefix" content="__PUBLIC_PATH_PREFIX__" />
+    <link rel="icon" href="%PUBLIC_URL%/distro-res/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #fff;
+        }
+        
+        #dashboard_page_spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+        
+        .dot-flashing {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #aaa;
+            -webkit-animation: dot-flashing 1s infinite linear alternate;
+            animation: dot-flashing 1s infinite linear alternate;
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+        
+        .dot-flashing::before,
+        .dot-flashing::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+        }
+        
+        .dot-flashing::before {
+            left: -15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #aaa;
+            -webkit-animation: dot-flashing 1s infinite alternate;
+            animation: dot-flashing 1s infinite alternate;
+            -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+        }
+        
+        .dot-flashing::after {
+            left: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #aaa;
+            -webkit-animation: dot-flashing 1s infinite alternate;
+            animation: dot-flashing 1s infinite alternate;
+            -webkit-animation-delay: 1s;
+            animation-delay: 1s;
+        }
+        
+        @-webkit-keyframes dot-flashing {
+            0% {
+                background-color: #aaa;
+            }
+            50%,
+            100% {
+                background-color: #ddd;
+            }
+        }
+        
+        @keyframes dot-flashing {
+            0% {
+                background-color: #aaa;
+            }
+            50%,
+            100% {
+                background-color: #ddd;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <script src="%PUBLIC_URL%/compat.js"></script>
-  <div id="dashboard_page_spinner">
-    <div class="dot-flashing"></div>
-  </div>
-  <div id="root"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script src="%PUBLIC_URL%/compat.js"></script>
+    <script src="%PUBLIC_URL%/autoload.js"></script>
 
-  <script>!(function () {
-      let e = document.createElement("script"),
-        t = document.head || document.getElementsByTagName("head")[0];
-      (e.src =
-        "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js"),
-        (e.async = !0),
-        (e.onload = () => {
-          window.WebChat.default(
-            {
-              customData: { language: "en" },
-              initPayload: "/greet",
-              socketUrl: "/",
-              socketPath: "/dashboard/api/tiger/socket.io/",
-              title: "Tiger",
-              // add other props here
-            },
-            null
-          );
-        }),
-        t.insertBefore(e, t.firstChild);
-    })();
-  </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/js/all.min.js"></script>
+    <div id="dashboard_page_spinner">
+        <div class="dot-flashing"></div>
+    </div>
+    <div id="root"></div>
+
+    <script>
+        !(function() {
+            let e = document.createElement("script"),
+                t = document.head || document.getElementsByTagName("head")[0];
+            (e.src =
+                "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js"),
+            (e.async = !0),
+            (e.onload = () => {
+                window.WebChat.default({
+                        customData: {
+                            language: "en"
+                        },
+                        initPayload: "/greet",
+                        socketUrl: "/",
+                        socketPath: "/dashboard/api/tiger/socket.io/",
+                        title: "Tiger",
+                        // add other props here
+                    },
+                    null
+                );
+            }),
+            t.insertBefore(e, t.firstChild);
+        })();
+    </script>
 
 </body>
 
